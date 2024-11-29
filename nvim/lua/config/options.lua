@@ -3,3 +3,4 @@
 -- Add any additional options here
 
 vim.opt.cursorline = false
+vim.g.lazyvim_python_lsp = "pyright"

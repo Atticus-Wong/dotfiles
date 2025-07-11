@@ -29,6 +29,12 @@ return {
           cwd = vim.fn.stdpath("config")
         }
       end)
+      vim.keymap.set("n", "<space>on", function()
+        require('telescope.builtin').find_files {
+          cwd = "/Users/atticus/Library/Mobile Documents/iCloud~md~obsidian/Documents/Obsidian Vault"
+        }
+      end)
+
 
       require "config.telescope.multigrep".setup()
     end

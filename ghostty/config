@@ -3,3 +3,4 @@ background = 13161a
 foreground = ffffff
 title = " "
 window-padding-y = 4
+font-size = 14

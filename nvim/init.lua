@@ -6,6 +6,7 @@ vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
 vim.opt.number = true
 vim.opt.relativenumber = true
+vim.opt.laststatus = 3
 vim.keymap.set("n", "<space>x", ":.lua<CR>")
 
 vim.keymap.set("i", "jk", "<ESC>")
@@ -30,3 +31,28 @@ vim.keymap.set('n', 'gra', vim.lsp.buf.code_action)
 vim.keymap.set('n', 'grr', vim.lsp.buf.references)
 
 vim.keymap.set('n', 'gd', vim.lsp.buf.definition)
+
+vim.diagnostic.config({
+  virtual_text = {
+    source = "if_many",
+    prefix = '● ',
+  },
+  underline = true,
+  signs = true,
+  update_in_insert = false,
+  severity_sort = true,
+})
+
+-- Create a local variable to track the virtual text state
+local show_virtual_text = true
+
+-- Define a function to toggle the virtual text
+local function toggle_virtual_text()
+  show_virtual_text = not show_virtual_text
+  vim.diagnostic.config({
+    virtual_text = show_virtual_text
+  })
+end
+
+-- Create the keymap
+vim.keymap.set("n", "<leader>td", toggle_virtual_text, { desc = "Toggle Virtual Text Diagnostics" })

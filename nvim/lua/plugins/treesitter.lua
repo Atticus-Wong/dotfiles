@@ -1,25 +1,53 @@
 return {
-	{
-		"nvim-treesitter/nvim-treesitter",
-		build = ":TSUpdate",
-		config = function()
-			require 'nvim-treesitter.configs'.setup {
-				ensure_installed = { "c", "cpp", "typescript", "lua", "vim", "vimdoc", "query", "markdown", "markdown_inline" },
-				auto_install = false,
-				highlight = {
-					enable = true,
-					---@diagnostic disable-next-line: unused-local
-					disable = function(lang, buf)
-						local max_filesize = 100 * 1024 -- 100 KB
-						--- @Disable diagnostics in the workspace (undefined-field).
-						local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-						if ok and stats and stats.size > max_filesize then
-							return true
-						end
-					end,
-					additional_vim_regex_highlighting = false,
-				},
-			}
-		end
-	}
+  "nvim-treesitter/nvim-treesitter",
+  event = { "BufReadPre", "BufNewFile" },
+  build = ":TSUpdate",
+  config = function()
+    -- import nvim-treesitter plugin
+    local treesitter = require("nvim-treesitter.configs")
+
+    -- configure treesitter
+    treesitter.setup({ -- enable syntax highlighting
+      highlight = {
+        enable = true,
+      },
+      -- enable indentation
+      indent = { enable = true },
+      -- ensure these language parsers are installed
+      ensure_installed = {
+        "json",
+        "javascript",
+        "typescript",
+        "tsx",
+        "yaml",
+        "html",
+        "css",
+        "prisma",
+        "markdown",
+        "markdown_inline",
+        "svelte",
+        "graphql",
+        "bash",
+        "lua",
+        "vim",
+        "dockerfile",
+        "gitignore",
+        "query",
+        "vimdoc",
+        "c",
+      },
+      incremental_selection = {
+        enable = true,
+        keymaps = {
+          init_selection = "<C-space>",
+          node_incremental = "<C-space>",
+          scope_incremental = false,
+          node_decremental = "<bs>",
+        },
+      },
+    })
+
+    -- use bash parser for zsh files
+    vim.treesitter.language.register("bash", "zsh")
+  end,
 }
